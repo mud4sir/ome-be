@@ -1,31 +1,27 @@
-const { default: mongoose } = require("mongoose");
-const bcrypt = require("bcrypt");
+const { default: mongoose } = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const SALT_WORK_FACTOR = 8;
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
 
-userSchema.pre("save", function (next) {
-  var user = this;
-  console.log("🚀 ~ file: userModel.js:18 ~ user:", user);
+UserSchema.pre('save', function (next) {
+  const user = this;
 
   // only hash the password if it has been modified (or is new)
-  if (!user.isModified("password")) return next();
-  console.log("sd");
+  if (!user.isModified('password')) return next();
   // generate a salt
-  bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-    console.log("sad22");
+  bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
     if (err) return next(err);
 
     // hash the password using our new salt
-    bcrypt.hash(user.password, salt, function (err, hash) {
-      if (err) return next(err);
+    bcrypt.hash(user.password, salt, (error, hash) => {
+      if (error) return next(error);
       // override the cleartext password with the hashed one
-      console.log("sda222222222");
       user.password = hash;
       next();
     });
@@ -39,4 +35,4 @@ userSchema.pre("save", function (next) {
 //   });
 // };
 
-exports.userModel = mongoose.model("User", userSchema);
+module.exports = mongoose.model('User', UserSchema);

@@ -1,12 +1,12 @@
-const { userModel } = require("../models/userModel");
+const { UserModel } = require('../models/userModel');
 
 exports.createUser = async (req, res) => {
   try {
     const userEntry = req.body;
-    const user = new userModel(userEntry);
+    const user = new UserModel(userEntry);
     const { password, confirmPassword } = userEntry;
     if (password !== confirmPassword) {
-      return res.status(400).json({ message: "Passwords do not match" });
+      return res.status(400).json({ message: 'Passwords do not match' });
     }
     await user.save();
     res.status(201).json(user);
@@ -17,12 +17,12 @@ exports.createUser = async (req, res) => {
 
 exports.getUser = (req, res) =>
   res.status(500).json({
-    status: "failed",
-    message: "route does not created",
+    status: 'failed',
+    message: 'route does not created',
   });
 
 exports.getUsers = (req, res) =>
   res.status(500).json({
-    status: "failed",
-    message: "route does not created",
+    status: 'failed',
+    message: 'route does not created',
   });
